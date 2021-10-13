@@ -1,4 +1,4 @@
-# ** Testing changing scale method **
+# *** Testing changing scale method ***
 
 Testing possible improvements in prediction avoiding scale problems when pricing is not included in the given training data range. 
 
