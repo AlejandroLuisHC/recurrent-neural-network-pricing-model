@@ -1,7 +1,20 @@
-# *** Testing changing scale method ***
+# *** Testing changing scaling method ***
 
-Testing possible improvements in prediction avoiding scale problems when pricing is not included in the given training data range. 
-
+Changing the scaling method to experiment how the LSTM RNN works under these changes. Also including up to date data to see and compare at different times both scaling systems.
+<br>
+<p align="left">
+  <img src="https://github.com/AlejandroLuisHC/recurrent-neural-network-pricing-model/blob/Develop/bitcoin_data/Bitcoin_Price_Prediction_Comparing_Scales.png?raw=true"
+  width="600" height="400">
+</p>
+<br>
+<br>
+<br>
+<p align="left">
+  <img src="https://github.com/AlejandroLuisHC/recurrent-neural-network-pricing-model/blob/Develop/bitcoin_data/Bitcoin_Price_Prediction_October_Comparing_Scales.png?raw=true"
+  width="600" height="400">
+</p>
+<br>
+<br>
 
 # Recurrent Neural Network Pricing Model 
 
