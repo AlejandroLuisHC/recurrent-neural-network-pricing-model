@@ -13,7 +13,7 @@ import keras
 
 #--------------------- Data Preprocessing --------------------#
 # Importing and scaling the data
-dataset_train = pd.read_csv("bitcoin_data/Bitcoin_Stock_Price_Trainset.csv")
+dataset_train = pd.read_csv("bitcoin_data/Bitcoin_Stock_Price_Trainset_October.csv")
 #selecting the right column (we need all rows and column 1) : numpy array
 training_set = dataset_train.iloc[:,1:2].values
 print(training_set)
@@ -27,15 +27,15 @@ training_set_scaled = sc.fit_transform(training_set)
 
 #print(training_set_scaled[0,:])
 
-#creating a data structure with 60 timesteps and 1 output
+#creating a data structure with 90 timesteps and 1 output
 X_train = []
 y_train = []
 
 for i in range(90,training_set_scaled.size):
-    # appending the 60 previous stock prices to the list for i
+    # appending the 90 previous stock prices to the list for i
     # we need to specify the rows and simply pick the first and only column
     X_train.append(training_set_scaled[i-90:i, 0])
-    # appending the 60th stock price to the list for i
+    # appending the 90th stock price to the list for i
     y_train.append(training_set_scaled[i, 0])
 # transforming pandas lists to numpy arrays required for the RNN
 X_train, y_train = np.array(X_train), np.array(y_train)
@@ -112,15 +112,15 @@ regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
 # regressor.fit(X_train, y_train, epochs = 120, batch_size = 32)
 
 # ------------- saving trainings (choose right one for each first train)
-# regressor.save("model.h5")
-# regressor.save("model_newscale.h5")
+# regressor.save("model_oct.h5")
+# regressor.save("model_oct_newscale.h5")
 
 # ------------- loading training
-regressor = keras.models.load_model('model.h5')
-regressor2 = keras.models.load_model('model_newscale.h5')
+regressor = keras.models.load_model('model_oct.h5')
+regressor_2 = keras.models.load_model('model_oct_newscale.h5')
 
 #--------------------- Testing RNN model --------------------#
-dataset_test = pd.read_csv("bitcoin_data/Bitcoin_Stock_Price_Testset.csv")
+dataset_test = pd.read_csv("bitcoin_data/Bitcoin_Stock_Price_Testset_October.csv")
 # actual stock prices
 real_stock_price = dataset_test.iloc[:,1:2].values
 # predicting the stock prices using X_test
@@ -129,9 +129,9 @@ dataset_total = pd.concat((dataset_train['Open'], dataset_test['Open']), axis = 
 print(real_stock_price)
 
 # for the consistence of the model we need to have the same scaling on the test as on the training
-# for the first test day we need the previous 60 days data from train
+# for the first test day we need the previous 90 days data from train
 print("First Financial day in 2021, when testing period begins",len(dataset_total)- len(dataset_test))
-print("First Financial day in 2021 minus 60 days",len(dataset_total)- len(dataset_test) - 90)
+print("First Financial day in 2021 minus 90 days",len(dataset_total)- len(dataset_test) - 90)
 inputs = dataset_total[len(dataset_total) - len(dataset_test) - 90:].values
 inputs_2 = dataset_total[len(dataset_total) - len(dataset_test) - 90:].values
 
@@ -165,18 +165,18 @@ X_test_2 = np.array(X_test_2)
 X_test_2 = np.reshape(X_test_2, [X_test_2.shape[0], X_test_2.shape[1], 1])
 
 #obtaining predicted values
-predicted_stock_price_2 = regressor2.predict(X_test_2)
+predicted_stock_price_2 = regressor_2.predict(X_test_2)
 predicted_stock_price_2 = predicted_stock_price_2 * 10e4
 
 #--------------------- Visualizing the RNN model results--------------------#
-plt.plot(real_stock_price, color = '#ffd700', label = "Real Price January - March 2021")
-plt.plot(predicted_stock_price, color = '#4782B4', label = "Predicted Price January - March 2021 MIN-MAX SCALE")
-plt.plot(predicted_stock_price_2, color = '#FF33E3', label = "Predicted Price January - March 2021 NEW SCALE")
-plt.title("Bitcoin Price Prediction")
+plt.plot(real_stock_price, color = '#ffd700', label = "Real Price August - October 2021")
+plt.plot(predicted_stock_price, color = '#4782B4', label = "Predicted Price August - October 2021 MIN-MAX SCALE")
+plt.plot(predicted_stock_price_2, color = '#FF33E3', label = "Predicted Price August - October 2021 NEW SCALE")
+plt.title("Bitcoin Price Prediction October")
 plt.xlabel("Time")
 plt.ylabel("Bitcoin Price")
 plt.legend()
-plt.savefig("bitcoin_data/Bitcoin_Price_Prediction_Comparing_Scales.png")
+plt.savefig("bitcoin_data/Bitcoin_Price_Prediction_October_Comparing_Scales.png")
 plt.show()
 
 
